@@ -7,6 +7,11 @@ const babelify = require('babelify').configure({
     presets:['es2020']
 })
 
+const node_modules = 'node_modules'
+const sweetAlert = node_modules + '/sweetalert2/dist'
+const bower_components_dir = 'bower_components'
+
+
 gulp.task('bundle', function () {
     let bundler = browserify('./src/app.js', {transform:babelify}).bundle()
     return bundler
@@ -29,3 +34,16 @@ gulp.task('watch', function () {
         middleware:[history()]
     })
 })
+
+gulp.task('copy', function () {
+    return gulp.src([
+        sweetAlert + '/sweetalert2.min.css',
+        node_modules + '/moment/moment.js',
+        bower_components_dir + '/moment/locale/tr.js',
+        node_modules + '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        node_modules + '/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+    ])
+        .pipe(gulp.dest('./app/packages'))
+})
+
+gulp.task('default', ['copy', 'watch'])

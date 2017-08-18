@@ -1,11 +1,9 @@
-const choo = require('choo')
-
 const html = require('choo/html')
 const log = require('choo-log')
+const choo = require('choo')
+const indexPage = require('./pages/index')
 
-const f7 = require('framework7')
-
-const rooLayout =  (child) => {
+const rootLayout = (child) => {
     return (state, emit) => html `
     <body>
         ${child(state, emit)}
@@ -16,11 +14,13 @@ const app = choo()
 
 app.use(log())
 
-app.route('/', rooLayout(function () {
-    return console.log('hello world')
-}))
+app.use(require('./models/global'))
+app.use(require('./models/index'))
 
-app.route('iletisim', rooLayout(function () {
+app.route('/', rootLayout(indexPage))
+
+
+app.route('iletisim', rootLayout(function () {
     return console.log('iletisim sayfası')
 }))
 
